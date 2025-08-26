@@ -1,5 +1,6 @@
-import "@/styles/globals.css";
-
+// import '../styles/'
+import Footer from "@/components/navigation/Footer";
+import Navbar from "@/components/navigation/Navbar";
 import { type Metadata } from "next";
 import { Geist } from "next/font/google";
 
@@ -19,7 +20,12 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${geist.variable}`}>
-      <body>{children}</body>
+      <body className="min-h-screen flex flex-col">
+        <Navbar />
+          <main className="flex-1">{children}</main>
+        <Footer />
+      </body>
     </html>
   );
 }
+
