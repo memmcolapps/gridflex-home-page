@@ -1,6 +1,7 @@
 import Image from 'next/image';
 
 interface Props {
+    id: string;
     icon: string;
     para1: string;
     para2: string;
@@ -15,6 +16,7 @@ interface Props {
 }
 
 export default function ProductCard({
+    id,
     icon,
     para1,
     para2,
@@ -28,7 +30,7 @@ export default function ProductCard({
     className,
 }: Props) {
     return (
-        <div className='flex flex-col gap-5'>
+        <div className={`${id} flex flex-col gap-5`}>
             <div
                 className={`flex flex-col md:flex-row items-center md:justify-between gap-6 md:gap-12 ${className}`}
             >

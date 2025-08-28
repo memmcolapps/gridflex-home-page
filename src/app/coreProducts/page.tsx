@@ -6,6 +6,7 @@ import ProductCard from './productCard'
 
 const CORE_PRODUCTS = [
   {
+    id: 'Data_Management',
     icon: '/icons/Data management.svg',
     image: '/images/image 25.png',
     title: 'Data Management',
@@ -21,7 +22,9 @@ const CORE_PRODUCTS = [
     ],
     paraEnd: 'This isn’t just data storage, it’s data you can trust. Every detail is secure, searchable, and ready when you need it, so your team spends less time managing and more time growing. ',
     para3: 'With GridFlex, data stops being scattered information and becomes the engine that drives your business forward.',
-  }, {
+  }, 
+  {
+    id: 'Meter_Management',
     icon: '/icons/Meter Management.svg',
     image: '/images/image 22.png',
     title: 'Meter Management',
@@ -37,6 +40,7 @@ const CORE_PRODUCTS = [
     paraEnd: 'With GridFlex Meter Management, your operations stay sharp and effortless, leaving you free to focus on powering communities, not paperwork.',
   },
   {
+    id: 'Vending_Platform',
     icon: '/icons/Vending.svg',
     image: '/images/image 26.png',
     title: 'Vending Platform',
@@ -52,6 +56,7 @@ const CORE_PRODUCTS = [
     paraEnd: 'With GridFlex’s Vending Platform, every sale is fast, every payment is secure, and every customer leaves satisfied.',
   },
   {
+    id: 'Billing_Platform',
     icon: '/icons/_ui-credit-card-02.svg',
     image: '/images/image 27.png',
     title: 'Billing Platform ',
@@ -67,6 +72,7 @@ const CORE_PRODUCTS = [
     paraEnd: 'With GridFlex’s Billing Platform, every bill is accurate, every cycle is on time, and every payment is easier to collect.',
   },
   {
+    id: 'Hes_Headend',
     icon: '/icons/HES.svg',
     image: '/images/image 28.png',
     title: 'Head-end System ',
@@ -106,8 +112,9 @@ const page = () => {
 
         <div>
           {CORE_PRODUCTS.map((product,index) => (
-            <div key={index}>
+            <div id={product.id} key={index}>
             <ProductCard
+            id={product.id}
              icon={product.icon}
               para1={product.para1} 
               para2={product.para2} 
