@@ -35,7 +35,7 @@ const Navbar = () => {
           width={40}
           height={40}
           priority
-          style={{ width: '70%', height: 'auto' }}
+          style={{ width: '60%', height: 'auto' }}
         />
       </div>
 
@@ -47,7 +47,7 @@ const Navbar = () => {
             <li key={idx} className="relative p-2 hover:border-b-2 hover:border-white">
               <div
                 onClick={() => setOpenDropdown((prev) => !prev)}
-                className="flex text-white items-center gap-1"
+                className="flex text-sm text-white items-center gap-1"
               >
                 {link.name}
                 {openDropdown ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
@@ -74,7 +74,7 @@ const Navbar = () => {
             <li
               key={idx}
               onClick={() => router.push(link.route)}
-              className="cursor-pointer text-white p-2 hover:border-b-2 hover:border-white"
+              className="cursor-pointer text-sm text-white p-2 hover:border-b-2 hover:border-white"
             >
               {link.name}
             </li>
@@ -83,7 +83,7 @@ const Navbar = () => {
       </ul>
 
       <div className="hidden sm:block">
-        <Button text={"Get Started"} className="w-40 h-10" />
+        <Button text={"Get Started"} className="w-36 text-sm h-10" />
       </div>
 
       {/* Hamburger */}

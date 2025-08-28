@@ -14,7 +14,7 @@ export default function Gridflex() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
                 <FlexCard
-                    icon={'/icons/image 21.svg'}
+                    icon={'/icons/merge-cells_svgrepo.com.svg'}
                     title={'Unified Control'}
                     content={'Manage vending, metering, data, and network operations from one intuitive dashboard.'}
                 />
