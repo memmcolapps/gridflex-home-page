@@ -1,13 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState, useEffect } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { ChevronDown, ChevronUp, Menu, X } from "lucide-react";
 import Button from "../buttons/Button";
 import Image from 'next/image'
 
 const Navbar = () => {
   const router = useRouter();
+  const pathname = usePathname(); 
   const [openDropdown, setOpenDropdown] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -16,15 +17,20 @@ const Navbar = () => {
     {
       name: "PRODUCTS",
       submenu: [
-        { name: "Data Management", route: "/" },
-        { name: "Meter Management", route: "/" },
-        { name: "Vending Platform", route: "/" },
-        { name: "Billing Platform", route: "/" },
-        { name: "HES (Head-end System)", route: "/" },
+        { name: "Data Management", route: "/coreProducts/#Data_Management" },
+        { name: "Meter Management", route: "/coreProducts/#Meter_Management" },
+        { name: "Vending Platform", route: "/coreProducts/#Vending_Platform" },
+        { name: "Billing Platform", route: "/coreProducts/#Billing_Platform" },
+        { name: "HES (Head-end System)", route: "/coreProducts/#Hes_Headend" },
       ],
     },
-    { name: "CONTACT US", route: "/" },
+    { name: "CONTACT US", route: "/(contact" },
   ];
+
+  useEffect(() => {
+    setOpenDropdown(false);
+    setMobileMenuOpen(false);
+  }, [pathname]); 
 
   return (
     <nav className="px-4 md:px-14 py-4 flex flex-row justify-between items-center relative">
@@ -38,7 +44,6 @@ const Navbar = () => {
           style={{ width: '60%', height: 'auto' }}
         />
       </div>
-
 
       {/* Web Navbar */}
       <ul className="hidden sm:flex gap-6 items-center">
@@ -112,10 +117,7 @@ const Navbar = () => {
                       {link.submenu.map((sub, i) => (
                         <li
                           key={i}
-                          onClick={() => {
-                            router.push(sub.route);
-                            setMobileMenuOpen(false);
-                          }}
+                          onClick={() => router.push(sub.route)}
                           className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                         >
                           {sub.name}
@@ -127,10 +129,7 @@ const Navbar = () => {
               ) : (
                 <li
                   key={idx}
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    router.push(link.route);
-                  }}
+                  onClick={() => router.push(link.route)}
                   className="px-2 py-2 cursor-pointer hover:bg-gray-100 rounded-md"
                 >
                   {link.name}
