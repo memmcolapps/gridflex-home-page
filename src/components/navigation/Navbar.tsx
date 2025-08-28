@@ -16,14 +16,14 @@ const Navbar = () => {
     {
       name: "PRODUCTS",
       submenu: [
-        { name: "Data Management", route: "/" },
+        { name: "Data Management", route: "/coreProducts/#Data_Management" },
         { name: "Meter Management", route: "/" },
         { name: "Vending Platform", route: "/" },
         { name: "Billing Platform", route: "/" },
         { name: "HES (Head-end System)", route: "/" },
       ],
     },
-    { name: "CONTACT US", route: "/" },
+    { name: "CONTACT US", route: "/(contact" },
   ];
 
   return (
