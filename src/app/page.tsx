@@ -1,11 +1,12 @@
 import Button from "@/components/buttons/Button";
 import About from "./(landingPage)/about/page";
 import Features from "./(landingPage)/features/page";
-import ManagementInfo from "./(landingPage)/managementInfo/page";
+import ManagementInfo from "./(landingPage)/managementInfo/managementInfoSection";
 import Gridflex from "./(landingPage)/gridflex/page";
-import FaqCard from "./(landingPage)/Faq/page";
+import FaqCard from "./(landingPage)/Faq/faqSection";
 import GetStarted from "./(landingPage)/getStarted/page";
 import { CirclePlay } from "lucide-react";
+import CornerDivs from "@/components/CornerDiv";
 
 export default function HomePage() {
   return (
@@ -24,6 +25,7 @@ export default function HomePage() {
           <Button className="w-full sm:w-40 h-12" text="Get Started" />
         </div>
 
+        <CornerDivs/>
       </div>
 
       <div className="w-full bg-white pb-4">

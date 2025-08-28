@@ -1,7 +1,7 @@
 import QuestionCard from "@/components/cards/QuestionCard";
-import Faq from "@/components/Faq/Faq";
+import FAQList from "@/components/Faq/Faq";
 
-interface Props{
+type Props = {
     bgColor: string;
     text: string;
 }
@@ -15,7 +15,7 @@ export default function FaqCard({ bgColor, text }:Props) {
                     <span className="font-thin">Everything you need to know about Gridflex.</span>
                 </div>
                 <div className="px-4 md:px-0">
-                    <Faq textColor={text} />
+                    <FAQList textColor={text} />
                 </div>
             </div>
             <div className="md:px-10 px-4">
