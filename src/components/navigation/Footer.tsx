@@ -39,13 +39,13 @@ const Footer = () => {
             <div className="flex flex-col gap-4">
               <div className='font-normal text-lg sm:text-2xl'>Policies</div>
               <div className='text-sm sm:text-base'>
-                <Link className='flex flex-row gap-1 ' href={'/privacyPolicy'}>
+                <Link className='flex flex-row gap-1 ' target='_blank' href={'/privacyPolicy'}>
                   Privacy Policy
                   <ArrowUpRight strokeWidth={1} />
                 </Link>
               </div>
               <div className='text-sm sm:text-base'>
-                <Link className='flex flex-row gap-1 ' href={'/termsOfUse'}>
+                <Link className='flex flex-row gap-1 ' target='_blank' href={'/termsOfUse'}>
                   Terms of Use
                   <ArrowUpRight strokeWidth={1} />
                 </Link>
