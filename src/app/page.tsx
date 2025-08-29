@@ -8,6 +8,30 @@ import GetStarted from "./(landingPage)/getStarted/page";
 import { CirclePlay } from "lucide-react";
 import CornerDivs from "@/components/CornerDiv";
 
+
+const FAQ_ITEM = [
+  {
+    question: 'Can I control meters remotely using the dashboard?',
+    answer: 'Yes, you can perform remote connect, disconnect, and configuration operations.'
+  },
+  {
+    question: 'Can the system send alerts?',
+    answer: 'I guess'
+  },
+  {
+    question: 'How secure is the system?',
+    answer: `I don't know I didn't build it. `
+  },
+  {
+    question: 'Can multiple users access the dashboard?',
+    answer: `I guess do u wanna access it ?`
+  },
+  {
+    question: 'Can I generate reports from the dashboard?',
+    answer: `You should be able to  `
+  }
+];
+
 export default function HomePage() {
   return (
     <main>
@@ -33,7 +57,7 @@ export default function HomePage() {
         <Features />
         <ManagementInfo bgColor={"[var(--primary)]"} circleColor={"white"} />
         <Gridflex />
-        <FaqCard bgColor={"[var(--primary)]"} text={"white"} />
+        <FaqCard bgColor={"[var(--primary)]"} text={"white"} faqItems={FAQ_ITEM} />
         <GetStarted />
       </div>
     </main>
