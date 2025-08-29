@@ -24,7 +24,7 @@ const Navbar = () => {
         { name: "HES (Head-end System)", route: "/coreProducts/#Hes_Headend" },
       ],
     },
-    { name: "CONTACT US", route: "/(contact" },
+    { name: "CONTACT US", route: "/contactus" },
   ];
 
   useEffect(() => {
