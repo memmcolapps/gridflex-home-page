@@ -3,6 +3,7 @@
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { ArrowUpRight } from 'lucide-react'
 
 const Footer = () => {
   return (
@@ -37,8 +38,18 @@ const Footer = () => {
 
             <div className="flex flex-col gap-4">
               <div className='font-normal text-lg sm:text-2xl'>Policies</div>
-              <div className='text-sm sm:text-base'>Privacy Policy</div>
-              <div className='text-sm sm:text-base'>Terms of Use</div>
+              <div className='text-sm sm:text-base'>
+                <Link className='flex flex-row gap-1 ' href={'/privacyPolicy'}>
+                  Privacy Policy
+                  <ArrowUpRight strokeWidth={1} />
+                </Link>
+              </div>
+              <div className='text-sm sm:text-base'>
+                <Link className='flex flex-row gap-1 ' href={'/termsOfUse'}>
+                  Terms of Use
+                  <ArrowUpRight strokeWidth={1} />
+                </Link>
+              </div>
             </div>
           </div>
 
@@ -51,10 +62,10 @@ const Footer = () => {
           <div>
           </div>
           <div className='flex flex-row gap-4 mb-2 md:mb-0'>
-            <Image src={'/icons/twitter logo.svg'} alt={'X'} width={20} height={20}/>
-            <Image src={'/icons/whatsapp logo.svg'} alt={'Whatsapp'} width={20} height={20}/>
-            <Image src={'/icons/instagram logo.svg'} alt={'Instagram'} width={20} height={20}/>
-            <Image src={'/icons/Linkedin logo.svg'} alt={'LinkedIn'} width={20} height={20}/>
+            <Image src={'/icons/twitter logo.svg'} alt={'X'} width={20} height={20} />
+            <Image src={'/icons/whatsapp logo.svg'} alt={'Whatsapp'} width={20} height={20} />
+            <Image src={'/icons/instagram logo.svg'} alt={'Instagram'} width={20} height={20} />
+            <Image src={'/icons/Linkedin logo.svg'} alt={'LinkedIn'} width={20} height={20} />
           </div>
         </div>
       </div>

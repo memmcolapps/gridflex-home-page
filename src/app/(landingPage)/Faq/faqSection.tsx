@@ -1,12 +1,18 @@
 import QuestionCard from "@/components/cards/QuestionCard";
 import FAQList from "@/components/Faq/Faq";
 
+interface FAQ_LIST {
+    question : string;
+    answer: string;
+}
+
 type Props = {
     bgColor: string;
     text: string;
+    faqItems: FAQ_LIST[];
 }
 
-export default function FaqCard({ bgColor, text }:Props) {
+export default function FaqCard({ bgColor, text, faqItems }: Props) {
     return (
         <div className={`bg-${bgColor} py-12 mb-10 `}>
             <div className="md:px-70 py-10">
@@ -15,11 +21,11 @@ export default function FaqCard({ bgColor, text }:Props) {
                     <span className="font-thin">Everything you need to know about Gridflex.</span>
                 </div>
                 <div className="px-4 md:px-0">
-                    <FAQList textColor={text} />
+                    <FAQList textColor={text} faqs={faqItems} />
                 </div>
             </div>
             <div className="md:px-10 px-4">
-                <QuestionCard/>
+                <QuestionCard />
             </div>
 
         </div>

@@ -4,6 +4,29 @@ import FaqCard from '../(landingPage)/Faq/faqSection'
 import ProductCard from './productCard'
 
 
+const FAQ_ITEM = [
+  {
+    question: 'Can I control meters remotely using the dashboard?',
+    answer: 'Yes, you can perform remote connect, disconnect, and configuration operations.'
+  },
+  {
+    question: 'Can the system send alerts?',
+    answer: 'I guess'
+  },
+  {
+    question: 'How secure is the system?',
+    answer: `I don't know I didn't build it. `
+  },
+  {
+    question: 'Can multiple users access the dashboard?',
+    answer: `I guess do u wanna access it ?`
+  },
+  {
+    question: 'Can I generate reports from the dashboard?',
+    answer: `You should be able to  `
+  }
+];
+
 const CORE_PRODUCTS = [
   {
     id: 'Data_Management',
@@ -22,7 +45,7 @@ const CORE_PRODUCTS = [
     ],
     paraEnd: 'This isn’t just data storage, it’s data you can trust. Every detail is secure, searchable, and ready when you need it, so your team spends less time managing and more time growing. ',
     para3: 'With GridFlex, data stops being scattered information and becomes the engine that drives your business forward.',
-  }, 
+  },
   {
     id: 'Meter_Management',
     icon: '/icons/Meter Management.svg',
@@ -91,12 +114,12 @@ const CORE_PRODUCTS = [
 
 const page = () => {
   return (
-    <div>
+    <div className="flex flex-col flex-1">
       <div className='flex justify-center mt-6 text-white text-3xl md:text-5xl font-medium'>
         Core Products
       </div>
 
-      <div className="bg-white flex-1 mt-10 pb-20">
+      <div className="bg-white flex-1 mt-10">
         <div className='px-6 md:px-20 py-10 flex flex-col gap-4 font-light text-gray-600 '>
           <p>
             GridFlex is an energy management software proudly built by <span className='text-[var(--primary)] font-medium'>MEMMCOL</span> , a forward-thinking provider of sustainable technology solutions across energy, utilities, and digital infrastructure.
@@ -111,20 +134,20 @@ const page = () => {
         </div>
 
         <div>
-          {CORE_PRODUCTS.map((product,index) => (
+          {CORE_PRODUCTS.map((product, index) => (
             <div id={product.id} key={index}>
-            <ProductCard
-            id={product.id}
-             icon={product.icon}
-              para1={product.para1} 
-              para2={product.para2} 
-              title={product.title}
-               subText={product.subText}
+              <ProductCard
+                id={product.id}
+                icon={product.icon}
+                para1={product.para1}
+                para2={product.para2}
+                title={product.title}
+                subText={product.subText}
                 subTitle={product.subTitle}
-                 subList={product.subList} 
-                 paraEnd={product.paraEnd} 
-                 para3={product.para3}
-                 imageSrc={product.image}/>
+                subList={product.subList}
+                paraEnd={product.paraEnd}
+                para3={product.para3}
+                imageSrc={product.image} />
             </div>
           ))}
         </div>
@@ -133,7 +156,7 @@ const page = () => {
           <ManagementInfo bgColor={"[var(--primary)]"} circleColor={"white"} />
         </div>
         <div>
-          <FaqCard bgColor={"white"} text={"black"} />
+          <FaqCard bgColor={"white"} text={"black"} faqItems={FAQ_ITEM} />
         </div>
       </div>
     </div>
