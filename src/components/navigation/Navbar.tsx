@@ -88,7 +88,7 @@ const Navbar = () => {
       </ul>
 
       <div className="hidden sm:block">
-        <Button text={"Get Started"} className="w-36 text-sm h-10" />
+        <Button onClick={() => router.push('/contactus')} text={"Get Started"} className="w-36 text-sm h-10" />
       </div>
 
       {/* Hamburger */}

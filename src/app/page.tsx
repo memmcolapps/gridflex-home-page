@@ -1,3 +1,5 @@
+'use client'
+
 import Button from "@/components/buttons/Button";
 import About from "./(landingPage)/about/page";
 import Features from "./(landingPage)/features/page";
@@ -7,6 +9,7 @@ import FaqCard from "./(landingPage)/Faq/faqSection";
 import GetStarted from "./(landingPage)/getStarted/page";
 import { CirclePlay } from "lucide-react";
 import CornerDivs from "@/components/CornerDiv";
+import { useRouter } from "next/navigation";
 
 
 const FAQ_ITEM = [
@@ -33,6 +36,7 @@ const FAQ_ITEM = [
 ];
 
 export default function HomePage() {
+  const router = useRouter()
   return (
     <main>
       <div className="min-h-screen text-white flex flex-col gap-6 justify-center items-center px-4 sm:px-8 md:px-16">
@@ -46,7 +50,7 @@ export default function HomePage() {
 
         <div className="flex flex-col sm:flex-row gap-4 mt-8 w-full sm:w-auto justify-center">
           <Button icon={<CirclePlay color="#000" strokeWidth={1.3} />} className="w-full sm:w-40 h-12" variant="secondary" text="Demo" />
-          <Button className="w-full sm:w-40 h-12" text="Get Started" />
+          <Button onClick={() => router.push('/contactus')} className="w-full sm:w-40 h-12" text="Get Started" />
         </div>
 
         <CornerDivs/>
