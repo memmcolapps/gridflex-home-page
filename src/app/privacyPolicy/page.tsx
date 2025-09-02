@@ -113,7 +113,7 @@ export default function Policy() {
               ))}
             </div>
   
-            <div className="flex gap-1">
+            <div className="flex flex-col md:flex-row gap-1">
               To exercise your rights, contact:
               <span>
                 <Link className="font-medium" href={"/"}>

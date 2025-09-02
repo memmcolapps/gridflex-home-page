@@ -1,6 +1,9 @@
+'use client'
+
 import Button from '@/components/buttons/Button'
 import { CircleCheck } from 'lucide-react'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 
 const items = [
     'Seamless integration',
@@ -9,6 +12,7 @@ const items = [
 ]
 
 export default function GetStarted() {
+    const router = useRouter()
     return (
         <div>
             <div
@@ -29,7 +33,7 @@ export default function GetStarted() {
                         ))}
                     </ul>
 
-                    <Button className="w-full sm:w-40 h-12 mt-4 " text={"Get Started"} />
+                    <Button onClick={() => router.push('/contactus')} className="w-full sm:w-40 h-12 mt-4 " text={"Get Started"} />
                 </div>
 
                 <div className="flex-shrink-0 w-full md:w-[550px] px-2 sm:px-6 md:px-0">

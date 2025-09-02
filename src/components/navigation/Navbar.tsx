@@ -24,7 +24,7 @@ const Navbar = () => {
         { name: "HES (Head-end System)", route: "/coreProducts/#Hes_Headend" },
       ],
     },
-    { name: "CONTACT US", route: "/(contact" },
+    { name: "CONTACT US", route: "/contactus" },
   ];
 
   useEffect(() => {
@@ -88,7 +88,7 @@ const Navbar = () => {
       </ul>
 
       <div className="hidden sm:block">
-        <Button text={"Get Started"} className="w-36 text-sm h-10" />
+        <Button onClick={() => router.push('/contactus')} text={"Get Started"} className="w-36 text-sm h-10" />
       </div>
 
       {/* Hamburger */}
