@@ -29,18 +29,33 @@ export const SuccessfulDialog = ({ isOpen, onOpenChange }: Props) => {
     return () => clearTimeout(timer);
   }, [isOpen]);
 
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
+  const size = isMobile ? 100 : 200;
+
   return (
     <Dialog open={delayedOpen} onOpenChange={onOpenChange}>
       <DialogContent className="gap-0 border-none">
         <DialogHeader className="gap-0 pt-8">
-          <div className="flex items-center justify-center">
-            <CircleCheck size={200} strokeWidth={0.4} color="#161CCA" />
+          <div className="flex px-16 md:px-0 items-center justify-center">
+            <CircleCheck size={size} strokeWidth={0.4} color="#161CCA" />
           </div>
           <div className="flex flex-col items-center justify-center">
-            <DialogTitle className="pt-4 font-normal text-[var(--primary)] ">
+            <DialogTitle className="pt-4 text-center text-sm md:text-base font-normal text-[var(--primary)] ">
               Your message has been successfully sent
             </DialogTitle>
-            <DialogDescription className="text-center font-light w-102 pt-4">
+            <DialogDescription className="text-center text-xs md:text-base font-light pt-4">
               Our team is reviewing it and will get back to you with feedback as
               soon as possible. Thank you for reaching out to GridFlex.
             </DialogDescription>
