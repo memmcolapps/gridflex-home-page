@@ -15,7 +15,7 @@ export default function ContactUs() {
     const items = ["Option 1", "Option 2", "Option 3"];
 
     return (
-        <div className="bg-white ">
+        <div className="bg-white">
             <div className="flex flex-col px-8 md:px-0 gap-6 justify-center pt-20 py-10 items-center">
                 <div className="bg-[#E6F3FF] px-5 py-1 tracking-wide text-[var(--primary)] text-lg font-light rounded-2xl">
                     Contact Us
@@ -78,7 +78,7 @@ export default function ContactUs() {
                 </div>
             </div>
             <div>
-                <ManagementInfo bgColor={"white"} textColor="black" circleColor='[#F4EBFF]' />
+                <ManagementInfo textColor="black" circleColor={"[var(--purple)]"} />
             </div>
         </div>
     )

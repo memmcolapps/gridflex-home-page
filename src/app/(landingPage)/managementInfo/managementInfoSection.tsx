@@ -1,7 +1,7 @@
 import Image from 'next/image'
 
 interface Props {
-    bgColor: string;
+    bgColor?: string;
     circleColor: string;
     textColor?: string;
 }

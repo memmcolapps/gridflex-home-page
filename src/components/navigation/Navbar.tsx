@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { ChevronDown, ChevronUp, Menu, X } from "lucide-react";
 import Button from "../buttons/Button";
@@ -11,6 +11,9 @@ const Navbar = () => {
   const pathname = usePathname(); 
   const [openDropdown, setOpenDropdown] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  const navbarRef = useRef<HTMLElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   const navLinks = [
     { name: "HOME", route: "/" },
@@ -26,14 +29,42 @@ const Navbar = () => {
     },
     { name: "CONTACT US", route: "/contactus" },
   ];
-
+  
   useEffect(() => {
     setOpenDropdown(false);
     setMobileMenuOpen(false);
   }, [pathname]); 
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+      
+      if (mobileMenuOpen && 
+          mobileMenuRef.current && 
+          !mobileMenuRef.current.contains(target) &&
+          navbarRef.current && 
+          !navbarRef.current.contains(target)) {
+        setMobileMenuOpen(false);
+      }
+      
+      if (openDropdown && 
+          navbarRef.current && 
+          !navbarRef.current.contains(target)) {
+        setOpenDropdown(false);
+      }
+    };
+
+    if (mobileMenuOpen || openDropdown) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [mobileMenuOpen, openDropdown]);
+
   return (
-    <nav className="px-4 md:px-14 py-4 flex flex-row justify-between items-center relative">
+    <nav ref={navbarRef} className="px-4 md:px-14 py-4 flex flex-row justify-between items-center relative">
       <div className="font-bold text-lg cursor-pointer w-10 sm:w-12 md:w-16" onClick={() => router.push("/")}>
         <Image
           src="/icons/gridflex-logo.svg"
@@ -100,7 +131,7 @@ const Navbar = () => {
 
       {/* Mobile Dropdown */}
       {mobileMenuOpen && (
-        <div className="absolute top-full left-0 w-full bg-white shadow-lg z-30 sm:hidden">
+        <div ref={mobileMenuRef} className="absolute top-full left-0 w-full bg-white shadow-lg z-30 sm:hidden">
           <ul className="flex flex-col gap-2 p-4">
             {navLinks.map((link, idx) =>
               link.submenu ? (

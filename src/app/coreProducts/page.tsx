@@ -31,7 +31,7 @@ const CORE_PRODUCTS = [
   {
     id: 'Data_Management',
     icon: '/icons/Data management.svg',
-    image: '/images/image 25.png',
+    image: '/images/core poduct 1.svg',
     title: 'Data Management',
     subText: 'Data that works as hard a you do.',
     para1: 'GridFlex Data Management is built to simplify the most complex part of your operations — keeping meters, customers, and transactions perfectly in sync.',
@@ -49,7 +49,7 @@ const CORE_PRODUCTS = [
   {
     id: 'Meter_Management',
     icon: '/icons/Meter Management.svg',
-    image: '/images/image 22.png',
+    image: '/images/core product 2.svg',
     title: 'Meter Management',
     subText: 'Smart Control, Simplified',
     para1: 'Meter Management is the heartbeat of GridFlex’s ecosystem, the control center where meters, customers, and operations work in perfect sync. It goes beyond record-keeping, ensuring every meter is correctly linked, monitored, and managed for smooth, bottleneck-free operations.',
@@ -65,7 +65,7 @@ const CORE_PRODUCTS = [
   {
     id: 'Vending_Platform',
     icon: '/icons/Vending.svg',
-    image: '/images/image 26.png',
+    image: '/images/core product 3.svg',
     title: 'Vending Platform',
     subText: 'Fast, Reliable & Always On',
     para1: ' The Vending Platform is where revenue meets reliability. It’s the engine that powers every transaction, ensuring your customers can buy electricity anytime, anywhere — without delays or disruptions. Designed for speed and accuracy, it eliminates the headaches of manual vending while giving you full control over your sales operations.',
@@ -81,7 +81,7 @@ const CORE_PRODUCTS = [
   {
     id: 'Billing_Platform',
     icon: '/icons/_ui-credit-card-02.svg',
-    image: '/images/image 27.png',
+    image: '/images/Core product 4.svg',
     title: 'Billing Platform ',
     subText: 'Powering Clarity, Connection & Control',
     para1: 'The Billing Platform is where data turns into revenue. It automates the process of generating and delivering bills, ensuring every customer gets accurate statements on time, every time. No more chasing numbers or manually calculating balances, the system does it all for you, so you can focus on growing your business.',
@@ -97,7 +97,7 @@ const CORE_PRODUCTS = [
   {
     id: 'Hes_Headend',
     icon: '/icons/HES.svg',
-    image: '/images/image 28.png',
+    image: '/images/core product 5.svg',
     title: 'Head-end System ',
     subText: 'Smart meter control at your fingertips.',
     para1: ' The Head-End System (HES) is your command center for smart meters. It communicates directly with meters in the field, collecting data, executing commands, and keeping your network running at peak performance.',
