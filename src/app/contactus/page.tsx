@@ -7,9 +7,11 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import Button from "@/components/buttons/Button";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { SuccessfulDialog } from "@/components/dialog/successful";
 
 export default function ContactUs() {
     const [selected, setSelected] = useState("");
+    const [isDialogOpen, setIsDialogOpen] = useState(false)
     const [open, setOpen] = useState(false);
 
     const items = ["Option 1", "Option 2", "Option 3"];
@@ -74,12 +76,14 @@ export default function ContactUs() {
                         <Textarea placeholder="Message..." id="message" />
                     </div>
 
-                    <Button text={"Send"} className="h-10" />
+                    <Button onClick={() => setIsDialogOpen(true)} text={"Send"} className="h-10" />
                 </div>
             </div>
             <div>
                 <ManagementInfo textColor="black" circleColor={"[var(--purple)]"} />
             </div>
+
+            <SuccessfulDialog isOpen={isDialogOpen} onOpenChange={setIsDialogOpen}/>
         </div>
     )
 }
