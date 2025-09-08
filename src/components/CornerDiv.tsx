@@ -1,6 +1,6 @@
 'use client'
 
-import { CirclePlay, CreditCard } from "lucide-react";
+import {  CreditCard } from "lucide-react";
 import { motion } from "framer-motion";
 import Image from 'next/image'
 import { useEffect, useState } from "react";
