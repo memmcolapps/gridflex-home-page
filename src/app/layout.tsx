@@ -24,7 +24,7 @@ export default function RootLayout({
         <div
           className="flex-1"
           style={{
-            backgroundImage: "url('/images/Landing page image.png')",
+            backgroundImage: "url('/images/hero section blurry.svg')",
           }}
         >
           <Navbar />

@@ -28,7 +28,7 @@ const Footer = () => {
           <div className='flex flex-row justify-center items-start md:pr-10 sm:items-center gap-10 sm:gap-6 md:gap-20'>
             <div className="flex flex-col gap-4">
               <div className='font-normal text-lg sm:text-2xl'>Contact</div>
-              <Link href={''} className='text-sm sm:text-base'>
+              <Link target='_blank' href={'https://memmcol.com'} className='text-sm sm:text-base'>
                 gridflex@memmcol.com
               </Link>
               <Link href="tel:+2348123456789" className='text-sm sm:text-base'>

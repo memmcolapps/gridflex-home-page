@@ -7,15 +7,17 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import Button from "@/components/buttons/Button";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { SuccessfulDialog } from "@/components/dialog/successful";
 
 export default function ContactUs() {
     const [selected, setSelected] = useState("");
+    const [isDialogOpen, setIsDialogOpen] = useState(false)
     const [open, setOpen] = useState(false);
 
     const items = ["Option 1", "Option 2", "Option 3"];
 
     return (
-        <div className="bg-white ">
+        <div className="bg-white">
             <div className="flex flex-col px-8 md:px-0 gap-6 justify-center pt-20 py-10 items-center">
                 <div className="bg-[#E6F3FF] px-5 py-1 tracking-wide text-[var(--primary)] text-lg font-light rounded-2xl">
                     Contact Us
@@ -74,12 +76,14 @@ export default function ContactUs() {
                         <Textarea placeholder="Message..." id="message" />
                     </div>
 
-                    <Button text={"Send"} className="h-10" />
+                    <Button onClick={() => setIsDialogOpen(true)} text={"Send"} className="h-10" />
                 </div>
             </div>
             <div>
-                <ManagementInfo bgColor={"white"} textColor="black" circleColor='[#F4EBFF]' />
+                <ManagementInfo textColor="black" circleColor={"[var(--purple)]"} />
             </div>
+
+            <SuccessfulDialog isOpen={isDialogOpen} onOpenChange={setIsDialogOpen}/>
         </div>
     )
 }
