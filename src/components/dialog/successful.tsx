@@ -48,7 +48,7 @@ export const SuccessfulDialog = ({ isOpen, onOpenChange }: Props) => {
     <Dialog open={delayedOpen} onOpenChange={onOpenChange}>
       <DialogContent className="gap-0 border-none">
         <DialogHeader className="gap-0 pt-8">
-          <div className="flex px-16 md:px-0 items-center justify-center">
+          <div className="flex px-16 md:px-0 items-center justify-center ">
             <CircleCheck size={size} strokeWidth={0.4} color="#161CCA" />
           </div>
           <div className="flex flex-col items-center justify-center">
