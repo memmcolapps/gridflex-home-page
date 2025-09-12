@@ -1,8 +1,8 @@
-'use client'
+"use client";
 
-import {  CreditCard } from "lucide-react";
+import { CreditCard } from "lucide-react";
 import { motion } from "framer-motion";
-import Image from 'next/image'
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function CornerDivs() {
@@ -14,9 +14,9 @@ export default function CornerDivs() {
     };
 
     checkScreenSize();
-    window.addEventListener('resize', checkScreenSize);
+    window.addEventListener("resize", checkScreenSize);
 
-    return () => window.removeEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
   const size = isMobile ? 100 : 200;
@@ -24,7 +24,7 @@ export default function CornerDivs() {
   return (
     <>
       {/* Top Left */}
-      <div className="absolute top-20 left-0 w-[100px] md:w-[200px] h-[100px] md:h-[200px] border-r-2 border-b-2 border-gray-400 bg-transparent flex items-start justify-start">
+      <div className="absolute top-20 left-0 flex h-[100px] w-[100px] items-start justify-start border-r-2 border-b-2 border-gray-400 bg-transparent md:h-[200px] md:w-[200px]">
         <motion.div
           className="absolute right-0"
           animate={{
@@ -38,10 +38,19 @@ export default function CornerDivs() {
             times: [0, 0.25, 0.5, 0.75, 1],
           }}
         >
-          <div className="absolute bottom-[-30] right-0 translate-x-1/2 -translate-y-1/2">
-            <div className="w-8 h-8 rounded-full bg-white/10 backdrop-lg flex items-center justify-center">
-              <div className="w-6 h-6 rounded-full bg-[var(--primary)] flex items-center justify-center">
-                <Image src={'/icons/fluent-mdl2_data-management-settings.svg'} alt={"..."} width={15} height={15} />
+          <div className="absolute right-0 bottom-[-30] translate-x-1/2 -translate-y-1/2">
+            <div className="backdrop-lg flex h-8 w-8 items-center justify-center rounded-full bg-white/10">
+              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--primary)]">
+                <Image
+                  src={"/icons/fluent-mdl2_data-management-settings.svg"}
+                  alt={"..."}
+                  width={15}
+                  height={15}
+                  placeholder="blur"
+                  blurDataURL={
+                    "/icons/fluent-mdl2_data-management-settings.svg"
+                  }
+                />
               </div>
             </div>
           </div>
@@ -49,7 +58,7 @@ export default function CornerDivs() {
       </div>
 
       {/* Top Right */}
-      <div className="absolute top-20 right-0 w-[100px] md:w-[200px] h-[100px] md:h-[200px] border-l-2 border-b-2  border-gray-400 bg-transparent flex items-start justify-end">
+      <div className="absolute top-20 right-0 flex h-[100px] w-[100px] items-start justify-end border-b-2 border-l-2 border-gray-400 bg-transparent md:h-[200px] md:w-[200px]">
         <motion.div
           className="absolute left-0"
           animate={{
@@ -64,9 +73,16 @@ export default function CornerDivs() {
           }}
         >
           <div className="absolute bottom-[-30] left-[-30] translate-x-1/2 -translate-y-1/2">
-            <div className="w-8 h-8 rounded-full bg-white/10 backdrop-lg flex items-center justify-center">
-              <div className="w-6 h-6 rounded-full bg-[var(--primary)] flex items-center justify-center">
-                <Image src={'/icons/hugeicons_energy.svg'} alt={"..."} width={15} height={15} />
+            <div className="backdrop-lg flex h-8 w-8 items-center justify-center rounded-full bg-white/10">
+              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--primary)]">
+                <Image
+                  src={"/icons/hugeicons_energy.svg"}
+                  alt={"..."}
+                  width={15}
+                  height={15}
+                  placeholder="blur"
+                  blurDataURL={"/icons/hugeicons_energy.svg"}
+                />
               </div>
             </div>
           </div>
@@ -74,7 +90,7 @@ export default function CornerDivs() {
       </div>
 
       {/* Bottom Left */}
-      <div className="absolute bottom-4 md:bottom-0 left-0 w-[100px] md:w-[200px] h-[100px] md:h-[200px] border-r-2 border-t-2 border-gray-400 bg-transparent mb-[-106px] ">
+      <div className="absolute bottom-4 left-0 mb-[-106px] h-[100px] w-[100px] border-t-2 border-r-2 border-gray-400 bg-transparent md:bottom-0 md:h-[200px] md:w-[200px]">
         <motion.div
           className="absolute"
           animate={{
@@ -89,8 +105,8 @@ export default function CornerDivs() {
           }}
         >
           <div className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2">
-            <div className="w-8 h-8 rounded-full bg-white/10 backdrop-lg flex items-center justify-center">
-              <div className="w-6 h-6 rounded-full bg-[var(--primary)] flex items-center justify-center">
+            <div className="backdrop-lg flex h-8 w-8 items-center justify-center rounded-full bg-white/10">
+              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--primary)]">
                 {/* <Image src={'/icons/_ui-credit-card-02.svg'} alt={"..."} width={15} height={15} /> */}
                 <CreditCard width={15} height={15} />
               </div>
@@ -100,7 +116,7 @@ export default function CornerDivs() {
       </div>
 
       {/* Bottom Right */}
-      <div className="absolute bottom-4 md:bottom-0 right-0 w-[100px] md:w-[200px] h-[100px] md:h-[200px] border-l-2 border-t-2 border-gray-400 bg-transparent mb-[-106px] ">
+      <div className="absolute right-0 bottom-4 mb-[-106px] h-[100px] w-[100px] border-t-2 border-l-2 border-gray-400 bg-transparent md:bottom-0 md:h-[200px] md:w-[200px]">
         <motion.div
           animate={{
             y: [size, 0, 0, 0, size],
@@ -114,9 +130,14 @@ export default function CornerDivs() {
           }}
         >
           <div className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2">
-            <div className="w-8 h-8 rounded-full bg-white/10 backdrop-lg flex items-center justify-center">
-              <div className="w-6 h-6 rounded-full bg-[var(--primary)] flex items-center justify-center">
-                <Image src={'/icons/merge-cells_svgrepo.com.svg'} alt={"..."} width={15} height={15} />
+            <div className="backdrop-lg flex h-8 w-8 items-center justify-center rounded-full bg-white/10">
+              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--primary)]">
+                <Image
+                  src={"/icons/merge-cells_svgrepo.com.svg"}
+                  alt={"..."}
+                  width={15}
+                  height={15}
+                />
               </div>
             </div>
           </div>
