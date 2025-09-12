@@ -1,4 +1,4 @@
-import '../styles/globals.css'
+import "../styles/globals.css";
 import Footer from "@/components/navigation/Footer";
 import Navbar from "@/components/navigation/Navbar";
 import { type Metadata } from "next";
@@ -20,11 +20,11 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${geist.variable}`}>
-      <body className="min-h-screen flex flex-col">
+      <body className="flex min-h-screen flex-col">
         <div
           className="flex-1"
           style={{
-            backgroundImage: "url('/images/hero section blurry.svg')",
+            backgroundImage: "url('/images/hero-section-blurry.webp')",
           }}
         >
           <Navbar />
