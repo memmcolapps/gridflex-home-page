@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import Button from "@/components/buttons/Button";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { Check, ChevronDown, ChevronUp } from "lucide-react";
 import { SuccessfulDialog } from "@/components/dialog/successful";
 
 export default function ContactUs() {
@@ -14,7 +14,7 @@ export default function ContactUs() {
     const [isDialogOpen, setIsDialogOpen] = useState(false)
     const [open, setOpen] = useState(false);
 
-    const items = ["Option 1", "Option 2", "Option 3"];
+    const items = ["1-50 (Employees)", "51-100 (Employees)", "101 and  Above (Employees)"];
 
     return (
         <div className="bg-white">
@@ -56,7 +56,13 @@ export default function ContactUs() {
                                         }}
                                         className="px-4 py-2 cursor-pointer text-gray-500 text-sm hover:bg-gray-100"
                                     >
+                                        <div className="flex justify-between items-center">
                                         {item}
+                                        {selected === item && (
+                                            <Check color="#000000" strokeWidth={1} />
+                                        )}
+                                        </div>
+                                        
                                     </li>
                                 ))}
                             </ul>
