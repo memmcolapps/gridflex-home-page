@@ -39,7 +39,7 @@ export const SuccessfulDialog = ({ isOpen, onOpenChange }: Props) => {
 
       const updateProgress = () => {
         const elapsed = Date.now() - startTime;
-        const newProgress = Math.min((elapsed / duration) * 200, 100);
+        const newProgress = Math.min((elapsed / duration) * 800, 100);
         setProgress(newProgress);
 
         if (newProgress < 100) {
@@ -58,27 +58,28 @@ export const SuccessfulDialog = ({ isOpen, onOpenChange }: Props) => {
     }
   }, [isOpen]);
 
-  const size = isMobile ? 120 : 200;
-  const radius = isMobile ? 70 : 78;
+  const size = isMobile ? 60 : 80; 
+  const radius = isMobile ? 45 : 55; 
   const circumference = 2 * Math.PI * radius;
   const strokeDasharray = circumference;
   const strokeDashoffset = circumference - (progress / 100) * circumference;
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="gap-0 border-none">
-        <DialogHeader className="gap-0 pt-8">
+      <DialogTitle></DialogTitle>
+      <DialogContent className="gap-0 border-none max-w-md w-full">
+        <DialogHeader className="gap-0 pt-4">
           {isLoading && (
-            <div className="flex md:items-center md:justify-center py-18 px-18 md:py-18 md:px-38">
+            <div className="flex items-center justify-center pb-4 py-8 px-4">
               <div className="relative">
-                <div className="h-26 w-26 md:h-40 md:w-40 rounded-full border-2 border-white"></div>
+                <div className="h-20 w-20 md:h-24 md:w-24 rounded-full border-2 border-white"></div>
                 <svg
-                  className="absolute bottom-14 h-26 w-26 md:h-40 md:w-40 transform -rotate-90"
-                  viewBox="0 0 160 160"
+                  className="absolute top-0 left-0 h-20 w-20 md:h-24 md:w-24 transform -rotate-90"
+                  viewBox="0 0 120 120"
                 >
                   <circle
-                    cx="80"
-                    cy="80"
+                    cx="60"
+                    cy="60"
                     r={radius}
                     stroke="#22c55e"
                     strokeWidth="3"
@@ -97,16 +98,15 @@ export const SuccessfulDialog = ({ isOpen, onOpenChange }: Props) => {
 
           {!isLoading && (
             <>
-              <div className="flex px-16 md:px-0 items-center justify-center">
+              <div className="flex items-center justify-center py-4">
                 <CircleCheck size={size} strokeWidth={0.4} color="#161CCA" />
               </div>
-              <div className="flex flex-col items-center justify-center">
-                <DialogTitle className="pt-4 text-center text-sm md:text-base font-normal text-[var(--primary)]">
-                  Your message has been successfully sent
+              <div className="flex flex-col items-center justify-center px-4 pb-4">
+                <DialogTitle className="text-center text-base md:text-md font-medium text-[var(--primary)] mb-2">
+                  Message Sent Successfully!
                 </DialogTitle>
-                <DialogDescription className="text-center text-xs md:text-base font-light pt-4">
-                  Our team is reviewing it and will get back to you with feedback as
-                  soon as possible. Thank you for reaching out to GridFlex.
+                <DialogDescription className="text-center font-light leading-relaxed">
+                  Our team will review your message and get back to you soon. Thank you for reaching out!
                 </DialogDescription>
               </div>
             </>
