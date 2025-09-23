@@ -3,6 +3,7 @@ import Footer from "@/components/navigation/Footer";
 import Navbar from "@/components/navigation/Navbar";
 import { type Metadata } from "next";
 import { Geist } from "next/font/google";
+import ReactQueryProvider from "./Providers";
 
 export const metadata: Metadata = {
   title: "Gridflex",
@@ -21,6 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geist.variable}`}>
       <body className="flex min-h-screen flex-col">
+        <ReactQueryProvider>
         <div
           className="flex-1"
           style={{
@@ -32,6 +34,8 @@ export default function RootLayout({
         </div>
 
         <Footer />
+        </ReactQueryProvider>
+      
       </body>
     </html>
   );
