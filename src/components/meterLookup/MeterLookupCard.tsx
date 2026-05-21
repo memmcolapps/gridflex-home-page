@@ -4,11 +4,11 @@ import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import Button from "@/components/buttons/Button";
-import {
-  lookupMeter,
-  type MeterLookupResult,
-  type MeterLookupStatus,
-} from "@/lib/meter-mock";
+import { useMeterLookup } from "@/hooks/use-meter";
+import type {
+  MeterLookupResult,
+  MeterLookupStatus,
+} from "@/services/meter.service";
 
 type ViewStatus = "idle" | "loading" | MeterLookupStatus;
 
@@ -209,25 +209,25 @@ function ErrorState({
 
 export default function MeterLookupCard() {
   const [meterNo, setMeterNo] = useState("");
-  const [viewStatus, setViewStatus] = useState<ViewStatus>("idle");
-  const [result, setResult] = useState<MeterLookupResult | null>(null);
 
-  const handleSearch = async () => {
+  const { mutate: lookupMeter, isPending, data } = useMeterLookup();
+
+  const handleSearch = () => {
     if (!meterNo.trim()) return;
-
-    setViewStatus("loading");
-    setResult(null);
-
-    const response = await lookupMeter(meterNo);
-
-    if (response.status === "success" && response.data) {
-      setResult(response.data);
-      setViewStatus("success");
-      return;
-    }
-
-    setViewStatus(response.status);
+    lookupMeter(meterNo.trim());
   };
+
+  const viewStatus: ViewStatus =
+    data === undefined
+      ? isPending
+        ? "loading"
+        : "idle"
+      : data.status === "success"
+        ? "success"
+        : data.status;
+
+  const result: MeterLookupResult | null =
+    data?.status === "success" ? data.data ?? null : null;
 
   return (
     <div className="mx-auto mt-10 w-full max-w-3xl pt-5 sm:mt-12 sm:pt-6">
@@ -247,7 +247,7 @@ export default function MeterLookupCard() {
         <Button
           text="Search"
           onClick={handleSearch}
-          disabled={viewStatus === "loading" || !meterNo.trim()}
+          disabled={isPending || !meterNo.trim()}
           className="h-12 w-full cursor-pointer"
         />
 
