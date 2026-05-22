@@ -1,10 +1,25 @@
 "use client";
 
-import { useMutation } from "@tanstack/react-query";
-import { lookupMeterData } from "@/services/meter.service";
+import { useQuery } from "@tanstack/react-query";
+import { fetchMeterInfo, fetchReadMeter } from "@/services/meter.service";
 
-export const useMeterLookup = () => {
-  return useMutation({
-    mutationFn: (meterNumber: string) => lookupMeterData(meterNumber),
+export const useMeterLookup = (meterNumber?: string) => {
+  const lookupMeterNumber = meterNumber?.trim();
+  const enabled = Boolean(lookupMeterNumber);
+
+  const meterInfo = useQuery({
+    queryKey: ["meter-info-lookup", lookupMeterNumber],
+    queryFn: () => fetchMeterInfo(lookupMeterNumber!),
+    enabled,
+    retry: false,
   });
+
+  const readMeter = useQuery({
+    queryKey: ["read-meter-lookup", lookupMeterNumber],
+    queryFn: () => fetchReadMeter(lookupMeterNumber!),
+    enabled,
+    retry: false,
+  });
+
+  return { meterInfo, readMeter, enabled };
 };

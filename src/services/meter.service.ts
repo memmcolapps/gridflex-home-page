@@ -1,7 +1,5 @@
 import axios from "axios";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-
 // ── Meter Info (meterInfo-lookup) ──────────────────────────────────────────
 export interface MeterInfoData {
   region: string;
@@ -89,20 +87,28 @@ export interface MeterLookupResponse {
   data?: MeterLookupResult;
 }
 
+export interface MeterReadValues {
+  energyLeft: string;
+  relayStatus: string;
+  meterTime: string;
+  meterDate: string;
+  rawReadMeter: ReadMeterOperation[];
+}
+
 // ── Individual API calls ───────────────────────────────────────────────────
 
 export const fetchMeterInfo = async (
-  meterNumber: string
+  meterNumber: string,
 ): Promise<MeterInfoResponse> => {
   const response = await axios.get<MeterInfoResponse>(
     `https://sbctest.memmserve.com:8081/grid-flex/v1/api/meter/service/meterInfo-lookup`,
-    { params: { meterNumber } }
+    { params: { meterNumber } },
   );
   return response.data;
 };
 
 export const fetchReadMeter = async (
-  meterNumber: string
+  meterNumber: string,
 ): Promise<ReadMeterResponse> => {
   const response = await axios.get<ReadMeterResponse>(
     `https://sbctest.memmserve.com:8081/grid-flex/v1/api/meter/service/readMeter-lookup`,
@@ -113,7 +119,7 @@ export const fetchReadMeter = async (
         readCredit: "READ_PUBLIC_CREDIT",
         readRelayStatus: "READ_RELAY_STATUS",
       },
-    }
+    },
   );
   return response.data;
 };
@@ -127,7 +133,10 @@ function findOperation(
   return operations.find((op) => op.operationAction === action);
 }
 
-function formatClockValue(op: ReadMeterOperation): { date: string; time: string } {
+function formatClockValue(op: ReadMeterOperation): {
+  date: string;
+  time: string;
+} {
   const raw = op.valueResponse?.timestamp ?? op.value;
   if (typeof raw === "string") {
     const d = new Date(raw);
@@ -141,37 +150,40 @@ function formatClockValue(op: ReadMeterOperation): { date: string; time: string 
   return { date: "", time: "" };
 }
 
-// ── Combined lookup (calls both APIs in parallel) ─────────────────────────
-
-export const lookupMeterData = async (
-  meterNumber: string
-): Promise<MeterLookupResponse> => {
-  const [infoSettled, readSettled] = await Promise.allSettled([
-    fetchMeterInfo(meterNumber),
-    fetchReadMeter(meterNumber),
-  ]);
-
-  if (infoSettled.status === "rejected") {
-    return { status: "not_found" };
-  }
-
-  const infoResult = infoSettled.value;
-
-  if (infoResult.responsecode !== "000") {
-    return { status: "not_found" };
-  }
-
-  const info = infoResult.responsedata;
-  const readOps: ReadMeterOperation[] =
-    readSettled.status === "fulfilled" && Array.isArray(readSettled.value.responsedata)
-      ? readSettled.value.responsedata
-      : [];
-
+export function getMeterReadValues(
+  readOps: ReadMeterOperation[] = [],
+  unavailableValue = "Not available",
+): MeterReadValues {
   const creditOp = findOperation(readOps, "READ_PUBLIC_CREDIT");
   const relayOp = findOperation(readOps, "READ_RELAY_STATUS");
   const clockOp = findOperation(readOps, "READ_CLOCK");
 
-  const clock = clockOp?.status === "SUCCESS" ? formatClockValue(clockOp) : null;
+  const clock =
+    clockOp?.status === "SUCCESS" ? formatClockValue(clockOp) : null;
+
+  return {
+    energyLeft:
+      creditOp?.status === "SUCCESS"
+        ? String(creditOp.value ?? "")
+        : unavailableValue,
+    relayStatus:
+      relayOp?.status === "SUCCESS"
+        ? (relayOp.relayStatus ?? "")
+        : unavailableValue,
+    meterTime: clock?.time ?? unavailableValue,
+    meterDate: clock?.date ?? unavailableValue,
+    rawReadMeter: readOps,
+  };
+}
+
+export function buildMeterLookupResult(
+  info: MeterInfoData,
+  readOps?: ReadMeterOperation[],
+): MeterLookupResult {
+  const readValues = getMeterReadValues(
+    readOps,
+    readOps ? "Not available" : "Loading...",
+  );
 
   const data: MeterLookupResult = {
     customerName: info.customerFullname,
@@ -184,22 +196,16 @@ export const lookupMeterData = async (
     lastVendingAmount: String(info.lastVendingAmount),
     lastVendingDate: new Date(info.lastVendingDate).toLocaleDateString(),
     lastEnergyPurchased: String(info.lastEnergyPurchase),
-    energyLeft:
-      creditOp?.status === "SUCCESS"
-        ? String(creditOp.value ?? "")
-        : "Not available",
+    energyLeft: readValues.energyLeft,
     averageDailyUsage: info.averageDailyUsage,
     averageMonthlyUsage: info.averageMonthlyUsage,
     connectionStatus: info.connectionType === "ONLINE" ? "online" : "offline",
-    relayStatus:
-      relayOp?.status === "SUCCESS"
-        ? (relayOp.relayStatus ?? "")
-        : "Not available",
-    meterTime: clock?.time ?? "Not available",
-    meterDate: clock?.date ?? "Not available",
+    relayStatus: readValues.relayStatus,
+    meterTime: readValues.meterTime,
+    meterDate: readValues.meterDate,
     rawMeterInfo: info,
-    rawReadMeter: readOps,
+    rawReadMeter: readValues.rawReadMeter,
   };
 
-  return { status: "success", data };
-};
+  return data;
+}

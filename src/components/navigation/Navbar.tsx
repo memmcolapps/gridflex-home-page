@@ -28,7 +28,7 @@ const Navbar = () => {
         { name: "HES (Head-end System)", route: "/coreProducts/#Hes_Headend" },
       ],
     },
-    { name: "METER LOOKUP", route: "/meterLookup" },
+    { name: "METER LOOKUP", route: "/meterlookup" },
     { name: "CONTACT US", route: "/contactus" },
   ];
   
