@@ -32,16 +32,31 @@ export interface MeterInfoResponse {
   responsedata: MeterInfoData;
 }
 
-// ── Read Meter (readMeter-lookup) — types to be updated after inspecting
-//    the network response
-export interface ReadMeterData {
-  [key: string]: unknown;
+// ── Read Meter (readMeter-lookup) ─────────────────────────────────────────
+export interface ReadMeterOperation {
+  operationAction: "READ_CLOCK" | "READ_PUBLIC_CREDIT" | "READ_RELAY_STATUS";
+  obisCode: string;
+  status: "SUCCESS" | "FAILED";
+  value?: number | string | boolean;
+  relayStatus?: string;
+  error?: string;
+  valueResponse?: {
+    error_code: number;
+    value: number | string | boolean;
+    success: boolean;
+    timestamp: string;
+  };
+  unit?: string;
+  scaler?: number;
+  ["Meter No"]?: string;
+  attributeIndex?: number;
+  dataIndex?: number;
 }
 
 export interface ReadMeterResponse {
   responsecode: string;
   responsedesc: string;
-  responsedata: ReadMeterData;
+  responsedata: ReadMeterOperation[];
 }
 
 // ── Combined result the UI consumes ────────────────────────────────────────
@@ -64,7 +79,7 @@ export interface MeterLookupResult {
   meterTime: string;
   meterDate: string;
   rawMeterInfo: MeterInfoData;
-  rawReadMeter?: ReadMeterData;
+  rawReadMeter?: ReadMeterOperation[];
 }
 
 export type MeterLookupStatus = "success" | "not_found" | "legacy";
@@ -103,6 +118,29 @@ export const fetchReadMeter = async (
   return response.data;
 };
 
+// ── Helpers for parsing readMeter operations ──────────────────────────────
+
+function findOperation(
+  operations: ReadMeterOperation[],
+  action: string,
+): ReadMeterOperation | undefined {
+  return operations.find((op) => op.operationAction === action);
+}
+
+function formatClockValue(op: ReadMeterOperation): { date: string; time: string } {
+  const raw = op.valueResponse?.timestamp ?? op.value;
+  if (typeof raw === "string") {
+    const d = new Date(raw);
+    if (!isNaN(d.getTime())) {
+      return {
+        date: d.toLocaleDateString(),
+        time: d.toLocaleTimeString(),
+      };
+    }
+  }
+  return { date: "", time: "" };
+}
+
 // ── Combined lookup (calls both APIs in parallel) ─────────────────────────
 
 export const lookupMeterData = async (
@@ -124,10 +162,16 @@ export const lookupMeterData = async (
   }
 
   const info = infoResult.responsedata;
-  const read =
-    readSettled.status === "fulfilled"
+  const readOps: ReadMeterOperation[] =
+    readSettled.status === "fulfilled" && Array.isArray(readSettled.value.responsedata)
       ? readSettled.value.responsedata
-      : undefined;
+      : [];
+
+  const creditOp = findOperation(readOps, "READ_PUBLIC_CREDIT");
+  const relayOp = findOperation(readOps, "READ_RELAY_STATUS");
+  const clockOp = findOperation(readOps, "READ_CLOCK");
+
+  const clock = clockOp?.status === "SUCCESS" ? formatClockValue(clockOp) : null;
 
   const data: MeterLookupResult = {
     customerName: info.customerFullname,
@@ -138,17 +182,23 @@ export const lookupMeterData = async (
     meterBand: info.bandName,
     businessHub: info.businessName,
     lastVendingAmount: String(info.lastVendingAmount),
-    lastVendingDate: info.lastVendingDate.toLocaleString(),
+    lastVendingDate: new Date(info.lastVendingDate).toLocaleDateString(),
     lastEnergyPurchased: String(info.lastEnergyPurchase),
-    energyLeft: "",
+    energyLeft:
+      creditOp?.status === "SUCCESS"
+        ? String(creditOp.value ?? "")
+        : "Not available",
     averageDailyUsage: info.averageDailyUsage,
     averageMonthlyUsage: info.averageMonthlyUsage,
     connectionStatus: info.connectionType === "ONLINE" ? "online" : "offline",
-    relayStatus: "",
-    meterTime: "",
-    meterDate: "",
+    relayStatus:
+      relayOp?.status === "SUCCESS"
+        ? (relayOp.relayStatus ?? "")
+        : "Not available",
+    meterTime: clock?.time ?? "Not available",
+    meterDate: clock?.date ?? "Not available",
     rawMeterInfo: info,
-    rawReadMeter: read,
+    rawReadMeter: readOps,
   };
 
   return { status: "success", data };
