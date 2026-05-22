@@ -80,7 +80,7 @@ export const fetchMeterInfo = async (
   meterNumber: string
 ): Promise<MeterInfoResponse> => {
   const response = await axios.get<MeterInfoResponse>(
-    `${BASE_URL}/meterInfo-lookup`,
+    `https://sbctest.memmserve.com:8081/grid-flex/v1/api/meter/service/meterInfo-lookup`,
     { params: { meterNumber } }
   );
   return response.data;
@@ -90,7 +90,7 @@ export const fetchReadMeter = async (
   meterNumber: string
 ): Promise<ReadMeterResponse> => {
   const response = await axios.get<ReadMeterResponse>(
-    `${BASE_URL}/readMeter-lookup`,
+    `https://sbctest.memmserve.com:8081/grid-flex/v1/api/meter/service/readMeter-lookup`,
     {
       params: {
         meterNumber,
