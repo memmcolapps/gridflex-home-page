@@ -131,7 +131,7 @@ function MeterResults({ data }: { data: MeterLookupResult }) {
           label="Last Energy Purchased (kwh)"
           value={data.lastEnergyPurchased}
         />
-        <MeterField label="Energy Left (kwh)" value={data.energyLeft} />
+        <MeterField label="Credit Balance (kwh)" value={data.energyLeft} />
         <MeterField
           label="Average Daily Usage (kwh)"
           value={data.averageDailyUsage}
@@ -227,7 +227,7 @@ export default function MeterLookupCard() {
         : data.status;
 
   const result: MeterLookupResult | null =
-    data?.status === "success" ? data.data ?? null : null;
+    data?.status === "success" ? (data.data ?? null) : null;
 
   return (
     <div className="mx-auto mt-10 w-full max-w-3xl pt-5 sm:mt-12 sm:pt-6">
