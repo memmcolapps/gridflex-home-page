@@ -5,6 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { ChevronDown, ChevronUp, Menu, X } from "lucide-react";
 import Button from "../buttons/Button";
 import Image from 'next/image'
+import { cn } from "@/lib/utils";
 
 const Navbar = () => {
   const router = useRouter();
@@ -27,41 +28,47 @@ const Navbar = () => {
         { name: "HES (Head-end System)", route: "/coreProducts/#Hes_Headend" },
       ],
     },
+    { name: "METER LOOKUP", route: "/meterLookup" },
     { name: "CONTACT US", route: "/contactus" },
   ];
   
   useEffect(() => {
     setOpenDropdown(false);
     setMobileMenuOpen(false);
-  }, [pathname]); 
+  }, [pathname]);
+
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Node;
-      
-      if (mobileMenuOpen && 
-          mobileMenuRef.current && 
-          !mobileMenuRef.current.contains(target) &&
-          navbarRef.current && 
-          !navbarRef.current.contains(target)) {
-        setMobileMenuOpen(false);
-      }
-      
-      if (openDropdown && 
-          navbarRef.current && 
-          !navbarRef.current.contains(target)) {
+
+      if (
+        openDropdown &&
+        navbarRef.current &&
+        !navbarRef.current.contains(target)
+      ) {
         setOpenDropdown(false);
       }
     };
 
-    if (mobileMenuOpen || openDropdown) {
-      document.addEventListener('mousedown', handleClickOutside);
+    if (openDropdown) {
+      document.addEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [mobileMenuOpen, openDropdown]);
+  }, [openDropdown]);
 
   return (
     <nav ref={navbarRef} className="px-4 md:px-14 py-4 flex flex-row justify-between items-center relative">
@@ -110,7 +117,12 @@ const Navbar = () => {
             <li
               key={idx}
               onClick={() => router.push(link.route)}
-              className="cursor-pointer text-sm text-white p-2 hover:border-b-2 hover:border-white"
+              className={cn(
+                "cursor-pointer text-sm text-white p-2",
+                pathname === link.route
+                  ? "border-b-2 border-white"
+                  : "hover:border-b-2 hover:border-white"
+              )}
             >
               {link.name}
             </li>
@@ -129,46 +141,96 @@ const Navbar = () => {
         </button>
       </div>
 
-      {/* Mobile Dropdown */}
+      {/* Mobile sidebar */}
       {mobileMenuOpen && (
-        <div ref={mobileMenuRef} className="absolute top-full left-0 w-full bg-white shadow-lg z-30 sm:hidden">
-          <ul className="flex flex-col gap-2 p-4">
-            {navLinks.map((link, idx) =>
-              link.submenu ? (
-                <li key={idx} className="flex flex-col">
-                  <div
-                    onClick={() => setOpenDropdown((prev) => !prev)}
-                    className="flex justify-between items-center cursor-pointer px-2 py-2"
+        <>
+          <button
+            type="button"
+            aria-label="Close menu"
+            className="fixed inset-0 z-40 bg-black/50 sm:hidden"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+          <aside
+            ref={mobileMenuRef}
+            className="fixed top-0 right-0 z-50 flex h-full w-[min(300px,85vw)] flex-col bg-white shadow-xl sm:hidden"
+          >
+            <div className="flex items-center justify-between border-b border-gray-100 px-5 py-4">
+              <button
+                type="button"
+                onClick={() => router.push("/")}
+                className="text-lg font-semibold text-[var(--primary)]"
+              >
+                GridFlex
+              </button>
+              <button
+                type="button"
+                aria-label="Close menu"
+                onClick={() => setMobileMenuOpen(false)}
+                className="rounded-md p-1 hover:bg-gray-100"
+              >
+                <X size={20} className="text-gray-800" />
+              </button>
+            </div>
+
+            <nav className="flex flex-1 flex-col gap-1 overflow-y-auto px-4 py-6">
+              {navLinks.map((link, idx) =>
+                link.submenu ? (
+                  <div key={idx} className="flex flex-col">
+                    <button
+                      type="button"
+                      onClick={() => setOpenDropdown((prev) => !prev)}
+                      className="flex w-full items-center justify-between rounded-lg px-3 py-3 text-left text-sm font-medium text-gray-800 hover:bg-gray-50"
+                    >
+                      {link.name}
+                      {openDropdown ? (
+                        <ChevronUp size={16} />
+                      ) : (
+                        <ChevronDown size={16} />
+                      )}
+                    </button>
+                    {openDropdown && (
+                      <ul className="mb-2 ml-2 flex flex-col border-l border-gray-200 pl-3">
+                        {link.submenu.map((sub, i) => (
+                          <li key={i}>
+                            <button
+                              type="button"
+                              onClick={() => router.push(sub.route)}
+                              className="w-full rounded-lg px-3 py-2.5 text-left text-sm text-gray-600 hover:bg-gray-50"
+                            >
+                              {sub.name}
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                ) : (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => router.push(link.route)}
+                    className={cn(
+                      "w-full rounded-lg px-3 py-3 text-left text-sm font-medium transition",
+                      pathname === link.route
+                        ? "bg-[#E6F3FF] text-[var(--primary)]"
+                        : "text-gray-800 hover:bg-gray-50"
+                    )}
                   >
                     {link.name}
-                    {openDropdown ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                  </div>
-                  {openDropdown && (
-                    <ul className="flex flex-col rounded-md mt-1">
-                      {link.submenu.map((sub, i) => (
-                        <li
-                          key={i}
-                          onClick={() => router.push(sub.route)}
-                          className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                        >
-                          {sub.name}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </li>
-              ) : (
-                <li
-                  key={idx}
-                  onClick={() => router.push(link.route)}
-                  className="px-2 py-2 cursor-pointer hover:bg-gray-100 rounded-md"
-                >
-                  {link.name}
-                </li>
-              )
-            )}
-          </ul>
-        </div>
+                  </button>
+                )
+              )}
+            </nav>
+
+            <div className="border-t border-gray-100 p-4">
+              <Button
+                onClick={() => router.push("/contactus")}
+                text="Get Started"
+                className="h-11 w-full text-sm"
+              />
+            </div>
+          </aside>
+        </>
       )}
     </nav>
   );

@@ -76,3 +76,33 @@ input[type="number"]::-webkit-outer-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+@keyframes meter-bar-dance {
+  0%,
+  100% {
+    transform: scaleY(0.45);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+.meter-loading-bar {
+  transform-origin: bottom center;
+  animation: meter-bar-dance 0.9s ease-in-out infinite;
+}
+
+@keyframes meter-dot-dance {
+  0%,
+  100% {
+    transform: scale(0.55);
+  }
+  50% {
+    transform: scale(1);
+  }
+}
+
+.meter-loading-dot {
+  transform-origin: center center;
+  animation: meter-dot-dance 0.9s ease-in-out infinite;
+}
