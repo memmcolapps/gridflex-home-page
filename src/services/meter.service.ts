@@ -11,11 +11,13 @@ export interface MeterInfoData {
   address: string;
   meterNumber: string;
   meterClass: string;
-  type: string;
+  meterModel: string;
+  meterCategory: string;
   status: string;
   vat: string;
   businessName: string;
   manufacturerName: string;
+  lastVendingDate: string;
   bandName: string;
   connectionType: string;
   lastVendingAmount: number;
@@ -129,14 +131,14 @@ export const lookupMeterData = async (
 
   const data: MeterLookupResult = {
     customerName: info.customerFullname,
-    meterModel: "",
+    meterModel: info.meterModel,
     meterClass: info.meterClass,
-    meterCategory: info.type,
+    meterCategory: info.meterCategory,
     meterManufacturer: info.manufacturerName,
     meterBand: info.bandName,
     businessHub: info.businessName,
     lastVendingAmount: String(info.lastVendingAmount),
-    lastVendingDate: "",
+    lastVendingDate: info.lastVendingDate.toLocaleString(),
     lastEnergyPurchased: String(info.lastEnergyPurchase),
     energyLeft: "",
     averageDailyUsage: info.averageDailyUsage,
