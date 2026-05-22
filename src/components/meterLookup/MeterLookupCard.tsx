@@ -1,16 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import Button from "@/components/buttons/Button";
 import { useMeterLookup } from "@/hooks/use-meter";
 import type {
+  MeterReadValues,
   MeterLookupResult,
-  MeterLookupStatus,
+} from "@/services/meter.service";
+import {
+  buildMeterLookupResult,
+  getMeterReadValues,
 } from "@/services/meter.service";
 
-type ViewStatus = "idle" | "loading" | MeterLookupStatus;
+type ViewStatus = "idle" | "loading" | "success" | "not_found";
 
 function WindowTab() {
   return (
@@ -163,6 +169,20 @@ function MeterResults({ data }: { data: MeterLookupResult }) {
   );
 }
 
+function MeterReadResults({ data }: { data: MeterReadValues }) {
+  return (
+    <div className="flex flex-col gap-1">
+      <SectionHeader title="Live Meter Readings" />
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <MeterField label="Credit Balance (kwh)" value={data.energyLeft} />
+        <MeterField label="Relay Status" value={data.relayStatus} />
+        <MeterField label="Meter Time" value={data.meterTime} />
+        <MeterField label="Meter Date" value={data.meterDate} />
+      </div>
+    </div>
+  );
+}
+
 const ERROR_IMAGE_SIZE = 200;
 const ERROR_IMAGE_SCALE = 2.2;
 
@@ -186,10 +206,11 @@ function ErrorState({
           height: ERROR_IMAGE_SIZE,
         }}
       >
-        {/* Native img + scale zooms past PNG padding so the artwork appears larger */}
-        <img
+        <Image
           src={imageSrc}
           alt={imageAlt}
+          width={ERROR_IMAGE_SIZE}
+          height={ERROR_IMAGE_SIZE}
           className="max-h-none max-w-none object-contain"
           style={{
             width: ERROR_IMAGE_SIZE,
@@ -207,27 +228,53 @@ function ErrorState({
   );
 }
 
-export default function MeterLookupCard() {
-  const [meterNo, setMeterNo] = useState("");
+export default function MeterLookupCard({
+  initialMeterNumber,
+}: {
+  initialMeterNumber?: string;
+}) {
+  const router = useRouter();
+  const activeMeterNumber = initialMeterNumber?.trim() ?? "";
+  const [meterNo, setMeterNo] = useState(activeMeterNumber);
+  const { meterInfo, readMeter, enabled } = useMeterLookup(activeMeterNumber);
 
-  const { mutate: lookupMeter, isPending, data } = useMeterLookup();
+  useEffect(() => {
+    setMeterNo(activeMeterNumber);
+  }, [activeMeterNumber]);
 
   const handleSearch = () => {
-    if (!meterNo.trim()) return;
-    lookupMeter(meterNo.trim());
+    const nextMeterNumber = meterNo.trim();
+    if (!nextMeterNumber) return;
+    router.push(`/meterlookup/${encodeURIComponent(nextMeterNumber)}`);
   };
 
-  const viewStatus: ViewStatus =
-    data === undefined
-      ? isPending
-        ? "loading"
-        : "idle"
-      : data.status === "success"
-        ? "success"
-        : data.status;
+  const readOps = Array.isArray(readMeter.data?.responsedata)
+    ? readMeter.data.responsedata
+    : undefined;
 
-  const result: MeterLookupResult | null =
-    data?.status === "success" ? (data.data ?? null) : null;
+  const meterInfoData =
+    meterInfo.data?.responsecode === "000"
+      ? meterInfo.data.responsedata
+      : undefined;
+  const meterInfoFailed =
+    meterInfo.isError ||
+    (meterInfo.data !== undefined && meterInfo.data.responsecode !== "000");
+  const result = meterInfoData
+    ? buildMeterLookupResult(meterInfoData, readOps)
+    : null;
+  const readResult = readOps ? getMeterReadValues(readOps) : null;
+  const resultStarted = Boolean(result ?? readResult);
+  const isLookingUp =
+    enabled &&
+    ((meterInfo.isPending && !meterInfoFailed) || readMeter.isPending);
+
+  const viewStatus: ViewStatus = result
+    ? "success"
+    : meterInfoFailed
+      ? "not_found"
+      : isLookingUp
+        ? "loading"
+        : "idle";
 
   return (
     <div className="mx-auto mt-10 w-full max-w-3xl pt-5 sm:mt-12 sm:pt-6">
@@ -247,13 +294,20 @@ export default function MeterLookupCard() {
         <Button
           text="Search"
           onClick={handleSearch}
-          disabled={isPending || !meterNo.trim()}
+          disabled={
+            !meterNo.trim() ||
+            (isLookingUp && meterNo.trim() === activeMeterNumber)
+          }
           className="h-12 w-full cursor-pointer"
         />
 
-        {viewStatus === "loading" && <LoadingBars />}
+        {viewStatus === "loading" && !resultStarted && <LoadingBars />}
 
         {viewStatus === "success" && result && <MeterResults data={result} />}
+
+        {viewStatus === "loading" && readResult && (
+          <MeterReadResults data={readResult} />
+        )}
 
         {viewStatus === "not_found" && (
           <ErrorState
@@ -261,15 +315,6 @@ export default function MeterLookupCard() {
             imageAlt="Meter not found"
             heading="We couldn't find that meter number"
             description="Please double-check your number and try again. Minor typos happen easily!"
-          />
-        )}
-
-        {viewStatus === "legacy" && (
-          <ErrorState
-            imageSrc="/images/MLIMAGE2.png"
-            imageAlt="Legacy meter"
-            heading="Meter is not registered as a Smart Meter"
-            description="We found your meter, but it is a traditional/legacy model. Because it lacks a digital network connection, real-time balance tracking and automated data retrieval are unavailable."
           />
         )}
       </div>
