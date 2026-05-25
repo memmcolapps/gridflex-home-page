@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Label } from "@/components/ui/label";
@@ -109,9 +109,32 @@ function ConnectionStatus({ status }: { status: "online" | "offline" }) {
 }
 
 function MeterResults({ data }: { data: MeterLookupResult }) {
+  const exportRef = useRef<HTMLDivElement>(null);
+
+  const handleExport = async () => {
+    if (!exportRef.current) return;
+    try {
+      const el = exportRef.current;
+      const { toPng } = await import("html-to-image");
+      const dataUrl = await toPng(el, {
+        backgroundColor: "#ffffff",
+        pixelRatio: 2,
+        width: el.scrollWidth,
+        height: el.scrollHeight,
+      });
+      const link = document.createElement("a");
+      link.download = "meter-info.png";
+      link.href = dataUrl;
+      link.click();
+    } catch (err) {
+      console.error("Export failed:", err);
+    }
+  };
+
   return (
     <div className="flex flex-col gap-1">
-      <SectionHeader title="Meter Information" />
+      <div ref={exportRef} className="flex flex-col gap-1 bg-white p-6">
+        <SectionHeader title="Meter Information" />
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <MeterField
           label="Customer Name"
@@ -137,7 +160,6 @@ function MeterResults({ data }: { data: MeterLookupResult }) {
           label="Last Energy Purchased (kwh)"
           value={data.lastEnergyPurchased}
         />
-        <MeterField label="Credit Balance (kwh)" value={data.energyLeft} />
         <MeterField
           label="Average Daily Usage (kwh)"
           value={data.averageDailyUsage}
@@ -153,14 +175,18 @@ function MeterResults({ data }: { data: MeterLookupResult }) {
         <MeterField
           label="Connection Status"
           value={<ConnectionStatus status={data.connectionStatus} />}
+          className="sm:col-span-2"
         />
+        <MeterField label="Credit Balance (kwh)" value={data.energyLeft} />
         <MeterField label="Relay Status" value={data.relayStatus} />
         <MeterField label="Meter Time" value={data.meterTime} />
         <MeterField label="Meter Date" value={data.meterDate} />
       </div>
+      </div>
 
       <button
         type="button"
+        onClick={handleExport}
         className="mt-6 w-full cursor-pointer rounded-xl border-2 border-[var(--primary)] py-2.5 font-semibold text-[var(--primary)] transition hover:bg-[#E6F3FF]"
       >
         Export
