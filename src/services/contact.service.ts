@@ -20,7 +20,7 @@ export const createMessage = async (
     data: ContactMessage
   ): Promise<ContactResponse> => {
     const response = await axios.post<ContactResponse>(
-      `https://sbctest.memmserve.com:8081/portal/onboard/v1/api/gfPortal/service/message/create`,
+      `https://sbctest.memmserve.com/portal/onboard/v1/api/gfPortal/service/message/create`,
       data,
       {
         headers: {
